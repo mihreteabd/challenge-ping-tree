@@ -1,72 +1,74 @@
 [
     {
-        "id": "1",
-        "url": "http://example.com",
-        "value": "0.50",
-        "maxAcceptsPerDay": "10",
-        "accept": {
-            "geoState": {
-                "$in": ["ca", "md"]
-            },
-              "hour": {
-                "$in": [ "13", "14", "15" ]
-              }
+      "id": "1",
+      "url": "http://example.com",
+      "value": "0.50",
+      "maxAcceptsPerDay": "12",
+      "accept": {
+        "geoState": {
+          "$in": ["ca", "md"]
+        },
+        "hour": {
+          "$in": ["13", "14", "15"]
         }
+      }
     },
     {
-        "id": "2",
-        "url": "http://example2.com",
-        "value": "0.70",
-        "maxAcceptsPerDay": "14",
-        "accept": {
-            "geoState": {
-                "$in": ["ny", "md"]
-            },
-              "hour": {
-                "$in": [ "9", "10", "12" ]
-              }
+      "id": "2",
+      "url": "http://example2.com",
+      "value": "0.70",
+      "maxAcceptsPerDay": "12",
+      "accept": {
+        "geoState": {
+          "$in": ["ny", "md"]
+        },
+        "hour": {
+          "$in": ["9", "10", "12"]
         }
+      }
     },
     {
-        "id": "3",
-        "url": "http://example3.com",
-        "value": "0.20",
-        "maxAcceptsPerDay": "6",
-        "accept": {
-            "geoState": {
-                "$in": ["nv", "md"]
-            },
-              "hour": {
-                "$in": [ "1", "2", "3" ]
-              }
+      "id": "3",
+      "url": "http://example3.com",
+      "value": "0.20",
+      "maxAcceptsPerDay": "6",
+      "accept": {
+        "geoState": {
+          "$in": ["nv", "md"]
+        },
+        "hour": {
+          "$in": ["1", "2", "3"]
         }
+      }
     },
     {
-        "id": "4",
-        "url": "http://example4.com",
-        "value": "0.50",
-        "maxAcceptsPerDay": "90",
-        "accept": {
-            "geoState": {
-                "$in": ["al", "ia"]
-            },
-              "hour": {
-                "$in": [ "4", "5", "6" ]
-              }
+      "id": "4",
+      "url": "http://example4.com",
+      "value": "0.10",
+      "maxAcceptsPerDay": "90",
+      "accept": {
+        "geoState": {
+          "$in": ["al", "ia"]
+        },
+        "hour": {
+          "$in": ["4", "5", "6"]
         }
+      }
     },
     {
-        "id": "5",
-        "url": "http://example5.com",
-        "value": "0.10",
-        "maxAcceptsPerDay": "2",
-        "accept": {
-            "geoState": {
-                "$in": ["ga", "mn"]
-            },
-              "hour": {
-                "$in": [ "17", "18", "19" ]
-              }
+      "id": "5",
+      "url": "http://example5.com",
+      "value": "0.10",
+      "maxAcceptsPerDay": "2",
+      "accept": {
+        "geoState": {
+          "$in": ["ga", "mn"]
+        },
+        "hour": {
+          "$in": ["17", "18", "19"]
         }
+      }
     }
-]
+  
+  ]
+  
