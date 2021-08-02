@@ -52,6 +52,23 @@ test.serial.cb('should get all targets', function (t) {
   }
 })
 
+test.serial.cb('should get target by id', function (t) {
+  var url = '/api/target/'
+  map(targets, 1, getTargetById, function (err) {
+    t.falsy(err, 'should not error')
+    t.end()
+  })
+  function getTargetById (target, cb) {
+    var opts = { encoding: 'json' }
+    servertest(server, url + target.id, opts, function (err, res) {
+      if (err) return cb(err)
+      t.is(res.statusCode, 200, 'correct status code')
+      t.deepEqual(res.body, target, 'targets should match')
+      cb()
+    })
+  }
+})
+
 test.serial.cb('should update target', function (t) {
   var url = '/api/target/'
   map([targets[3]], 1, updatetarget, function (err) {
