@@ -21,11 +21,11 @@ test.serial.cb('healthcheck', function (t) {
 
 test.serial.cb('should add target', function (t) {
   var url = '/api/targets'
-  map(targets, 1, addtarget, function (err) {
+  map(targets, 1, addTarget, function (err) {
     t.falsy(err, 'should not error')
     t.end()
   })
-  function addtarget (target, cb) {
+  function addTarget (target, cb) {
     var opts = { encoding: 'json', method: 'POST' }
     var stream = servertest(server, url, opts, function (err, res) {
       t.is(res.statusCode, 201, 'correct status code')
@@ -38,11 +38,11 @@ test.serial.cb('should add target', function (t) {
 
 test.serial.cb('should get all targets', function (t) {
   var url = '/api/targets'
-  map(targets, 1, gettargets, function (err) {
+  map(targets, 1, getTargets, function (err) {
     t.falsy(err, 'should not error')
     t.end()
   })
-  function gettargets (e = null, cb) {
+  function getTargets (e = null, cb) {
     var opts = { encoding: 'json', method: 'GET' }
     servertest(server, url, opts, function (err, res) {
       if (err) return cb(err)
@@ -72,11 +72,11 @@ test.serial.cb('should get target by id', function (t) {
 
 test.serial.cb('should update target', function (t) {
   var url = '/api/target/'
-  map([targets[3]], 1, updatetarget, function (err) {
+  map([targets[3]], 1, updateTargets, function (err) {
     t.falsy(err, 'should not error')
     t.end()
   })
-  function updatetarget (target, cb) {
+  function updateTargets (target, cb) {
     var opts = { encoding: 'json', method: 'POST' }
     var stream = servertest(server, url + target.id, opts, function (err, res) {
       t.falsy(err, 'should not error')
@@ -85,9 +85,9 @@ test.serial.cb('should update target', function (t) {
       cb(err)
     })
 
-    const updatetarget = { ...target, maxAcceptsPerDay: 10 }
+    const updateTarget = { ...target, maxAcceptsPerDay: 10 }
 
-    stream.end(JSON.stringify(updatetarget))
+    stream.end(JSON.stringify(updateTarget))
   }
 })
 
