@@ -34,3 +34,24 @@ test.serial.cb('should add target', function (t) {
     stream.end(JSON.stringify(target))
   }
 })
+
+test.serial.cb('should update target', function (t) {
+  var url = '/api/target/'
+  map([targets[3]], 1, updatetarget, function (err) {
+    t.falsy(err, 'should not error')
+    t.end()
+  })
+  function updatetarget (target, cb) {
+    var opts = { encoding: 'json', method: 'POST' }
+    var stream = servertest(server, url + target.id, opts, function (err, res) {
+      t.falsy(err, 'should not error')
+      t.is(res.statusCode, 200, 'correct status code')
+      t.is(res.body.maxAcceptsPerDay, 10)
+      cb(err)
+    })
+
+    const updatetarget = { ...target, maxAcceptsPerDay: 10 }
+
+    stream.end(JSON.stringify(updatetarget))
+  }
+})
