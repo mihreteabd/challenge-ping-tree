@@ -58,11 +58,39 @@
     {
       "id": "5",
       "url": "http://example5.com",
-      "value": "0.10",
+      "value": "0.80",
       "maxAcceptsPerDay": "2",
       "accept": {
         "geoState": {
           "$in": ["ga", "mn"]
+        },
+        "hour": {
+          "$in": ["17", "18", "19"]
+        }
+      }
+    },
+    {
+      "id": "6",
+      "url": "http://example6.com",
+      "value": "0.20",
+      "maxAcceptsPerDay": "12",
+      "accept": {
+        "geoState": {
+          "$in": ["va", "sc"]
+        },
+        "hour": {
+          "$in": ["17", "18", "19"]
+        }
+      }
+    },
+    {
+      "id": "7",
+      "url": "http://example7.com",
+      "value": "0.10",
+      "maxAcceptsPerDay": "2",
+      "accept": {
+        "geoState": {
+          "$in": ["va", "sc"]
         },
         "hour": {
           "$in": ["17", "18", "19"]
