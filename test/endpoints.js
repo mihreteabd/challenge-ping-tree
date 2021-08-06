@@ -175,3 +175,32 @@ test.serial.cb('should correctly handle max traffic', function (t) {
     })
   }
 })
+test.serial.cb('should choose route with high value', function (t) {
+  var requests = [
+    {
+      geoState: 'va',
+      publisher: 'abc',
+      timestamp: '2017-03-12T18:30:00.000Z' // 18hr
+    }
+  ]
+
+  var expected = [
+    'http://example6.com'
+  ]
+
+  map(requests, 1, routeTraffic, function (err, routes) {
+    t.falsy(err, 'should not error')
+    t.deepEqual(routes, expected, 'routes should match')
+    t.end()
+  })
+
+  function routeTraffic (request, cb) {
+    var opts = { encoding: 'json', method: 'GET' }
+    var url = '/api/route?' + querystring.stringify(request)
+    servertest(server, url, opts, function (err, res) {
+      if (err) return cb(err)
+      t.is(res.statusCode, 302, 'correct statusCode')
+      cb(null, res.headers.location || res.body)
+    })
+  }
+})
