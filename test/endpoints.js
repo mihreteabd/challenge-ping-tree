@@ -204,3 +204,96 @@ test.serial.cb('should choose route with high value', function (t) {
     })
   }
 })
+
+
+test.serial.cb('target should ignore non-exitent query criterias', function (t) {
+  var requests = [
+    {
+      geoState: 'oh',
+      publisher: 'abc',
+      timestamp: '2017-03-12T18:30:00.000Z'
+    }
+  ]
+
+  var expected = [
+    'http://example8.com'
+  ]
+
+  map(requests, 1, routeTraffic, function (err, routes) {
+    t.falsy(err, 'should not error')
+    t.deepEqual(routes, expected, 'routes should match')
+    t.end()
+  })
+
+  function routeTraffic (request, cb) {
+    var opts = { encoding: 'json', method: 'GET' }
+    var url = '/api/route?' + querystring.stringify(request)
+    servertest(server, url, opts, function (err, res) {
+      if (err) return cb(err)
+      t.is(res.statusCode, 302, 'correct statusCode')
+      cb(null, res.headers.location || res.body)
+    })
+  }
+})
+
+
+test.serial.cb('should reject if non of the targets meet criteria', function (t) {
+  var requests = [
+    {
+      geoState: 'ok',
+      publisher: 'abc',
+      timestamp: '2017-03-12T18:30:00.000Z'
+    }
+  ]
+
+  var expected = [
+    { decision: 'reject' } // because there is no target that has "ok" as geoState
+  ]
+
+  map(requests, 1, routeTraffic, function (err, routes) {
+    t.falsy(err, 'should not error')
+    t.deepEqual(routes, expected, 'routes should match')
+    t.end()
+  })
+
+  function routeTraffic (request, cb) {
+    var opts = { encoding: 'json', method: 'GET' }
+    var url = '/api/route?' + querystring.stringify(request)
+    servertest(server, url, opts, function (err, res) {
+      if (err) return cb(err)
+      t.is(res.statusCode, 302, 'correct statusCode')
+      cb(null, res.headers.location || res.body)
+    })
+  }
+})
+
+
+test.serial.cb('should reject if some query criterias are meet but some are no', function (t) {
+  var requests = [
+    {
+      geoState: 'mi',
+      publisher: 'abc',
+      timestamp: '2017-03-12T12:30:00.000Z'
+    }
+  ]
+
+  var expected = [
+    { decision: 'reject' }
+  ]
+
+  map(requests, 1, routeTraffic, function (err, routes) {
+    t.falsy(err, 'should not error')
+    t.deepEqual(routes, expected, 'routes should match')
+    t.end()
+  })
+
+  function routeTraffic (request, cb) {
+    var opts = { encoding: 'json', method: 'GET' }
+    var url = '/api/route?' + querystring.stringify(request)
+    servertest(server, url, opts, function (err, res) {
+      if (err) return cb(err)
+      t.is(res.statusCode, 302, 'correct statusCode')
+      cb(null, res.headers.location || res.body)
+    })
+  }
+})

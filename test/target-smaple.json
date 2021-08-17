@@ -96,6 +96,31 @@
           "$in": ["17", "18", "19"]
         }
       }
+    },
+    {
+      "id": "8",
+      "url": "http://example8.com",
+      "value": "99",
+      "maxAcceptsPerDay": "10",
+      "accept": {
+        "geoState": {
+          "$in": ["oh"]
+        }
+      }
+    },
+    {
+      "id": "9",
+      "url": "http://example9.com",
+      "value": "98",
+      "maxAcceptsPerDay": "10",
+      "accept": {
+        "geoState": {
+          "$in": ["mi"]
+        },
+        "hour": {
+          "$in": ["17", "18", "19"]
+        }
+      }
     }
   
   ]
