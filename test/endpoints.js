@@ -71,8 +71,67 @@ test.serial.cb('should get target by id', function (t) {
 })
 
 test.serial.cb('should update target', function (t) {
+  var nonExistentTarget = {
+    "id": "21", // this id is not found so should not update
+    "url": "http://example.com",
+    "value": "0.50",
+    "maxAcceptsPerDay": "12",
+    "accept": {
+      "geoState": {
+        "$in": ["ca", "md"]
+      },
+      "hour": {
+        "$in": ["13", "14", "15"]
+      }
+    }
+  }
+
+  // We assume targets[3] is already in the db.
+  var sampleTargets = [targets[3], nonExistentTarget];
   var url = '/api/target/'
-  map([targets[3]], 1, updateTargets, function (err) {
+
+  let expected = [
+    10,
+    undefined // Should fail because the target does not exist
+  ]
+
+  map(sampleTargets, 1, updateTargets, function (err, body) {
+    t.falsy(err, 'should not error')
+    let maxAcc = body.map(x => x.maxAcceptsPerDay);
+    console.log('maxAcc ', maxAcc)
+    t.deepEqual(maxAcc, expected, 'routes should match')
+    t.end()
+  })
+  function updateTargets (target, cb) {
+    var opts = { encoding: 'json', method: 'POST' }
+    var stream = servertest(server, url + target.id, opts, function (err, res) {
+      t.falsy(err, 'should not error')
+      cb(err, res.body)
+    })
+
+    const updateTarget = { ...target, maxAcceptsPerDay: 10 }
+
+    stream.end(JSON.stringify(updateTarget))
+  }
+})
+
+test.serial.cb('should not update target', function (t) {
+  var sampleTarget = {
+    "id": "21", // this id is not found so should not update
+    "url": "http://example.com",
+    "value": "0.50",
+    "maxAcceptsPerDay": "12",
+    "accept": {
+      "geoState": {
+        "$in": ["ca", "md"]
+      },
+      "hour": {
+        "$in": ["13", "14", "15"]
+      }
+    }
+  }
+  var url = '/api/target/'
+  map([sampleTarget], 1, updateTargets, function (err) {
     t.falsy(err, 'should not error')
     t.end()
   })
@@ -81,7 +140,7 @@ test.serial.cb('should update target', function (t) {
     var stream = servertest(server, url + target.id, opts, function (err, res) {
       t.falsy(err, 'should not error')
       t.is(res.statusCode, 200, 'correct status code')
-      t.is(res.body.maxAcceptsPerDay, 10)
+      t.deepEqual(res.body, {}, 'should body empty')
       cb(err)
     })
 
