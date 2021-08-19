@@ -54,18 +54,33 @@ test.serial.cb('should get all targets', function (t) {
 })
 
 test.serial.cb('should get target by id', function (t) {
+  var sampleTargetId = [1, 31]
+  var expected = [{
+    id: '1',
+    url: 'http://example.com',
+    value: '0.50',
+    maxAcceptsPerDay: '12',
+    accept: {
+      geoState: {
+        $in: ['ca', 'md']
+      },
+      hour: {
+        $in: ['13', '14', '15']
+      }
+    }
+  }, null]
   var url = '/api/target/'
-  map(targets, 1, getTargetById, function (err) {
+  map(sampleTargetId, 1, getTargetById, function (err, body) {
     t.falsy(err, 'should not error')
+    t.deepEqual(body, expected, 'targets should match')
     t.end()
   })
-  function getTargetById (target, cb) {
+  function getTargetById (targetId, cb) {
     var opts = { encoding: 'json' }
-    servertest(server, url + target.id, opts, function (err, res) {
+    servertest(server, url + targetId, opts, function (err, res) {
       if (err) return cb(err)
       t.is(res.statusCode, 200, 'correct status code')
-      t.deepEqual(res.body, target, 'targets should match')
-      cb()
+      cb(err, res.body)
     })
   }
 })
